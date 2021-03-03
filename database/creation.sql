@@ -1,8 +1,8 @@
-DROP DATABASE rexfriends;
+-- DROP DATABASE rexfriends;
 
-CREATE DATABASE rexfriends;
+/*CREATE DATABASE rexfriends;
 
-USE rexfriends;
+USE rugarug_rexfriends;
 
 CREATE TABLE users(
     users_id INT NOT NULL AUTO_INCREMENT
@@ -20,7 +20,7 @@ CREATE TABLE posts(
 ,   post_content VARCHAR(500) NOT NULL
 ,   posted_date DATE NOT NULL
 ,   PRIMARY KEY (post_id)
-);
+);*/
 
 INSERT INTO users
 (
