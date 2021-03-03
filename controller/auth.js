@@ -19,6 +19,7 @@ exports.getLogin = (req, res, next) => {
     });
 };
 
+//testing
 exports.getSignup = (req, res, next) => {
     let message = req.flash('error');
     if (message.length > 0) {
