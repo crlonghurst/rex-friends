@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 
 // var con = mysql.createConnection({
 //   host: "localhost",
@@ -7,7 +7,7 @@ var mysql = require('mysql');
 //   database: "rexfriends"
 // });
 
-var con = mysql.createConnection({
+module.exports = mysql.createConnection({
   host: "johnny.heliohost.org",
   user: "rugarug_rexfriends",
   password: "cse341Team4",
@@ -16,44 +16,20 @@ var con = mysql.createConnection({
 
 //username: rexfriends
 //password: cse341Team4
-function selectAllFromUsers(){
-  console.log(con.host)
-  con.connect(function(err) {
-    if (err) throw err;
-      con.query("SELECT * FROM users;", function(err,result,fields){
-        if (err) throw err;
-        console.log(result);
-
-      })
-  });
-}
-
-function selectAllFromPosts(){
-  con.connect(function(err){
-    if(err)throw err;
-    con.query("SELECT * FROM posts;", function(err,result,fields){
-      if(err)throw err;
-      console.log(result);
-    })
-  });
-}
 
 
 
-function insertNewUser(firstName, lastName, username, user_password){
-  const user = [firstName, lastName, username, user_password];
-  let sql = 'INSERT INTO users (user_first_name,   user_last_name,   username,   user_password) VALUES (?)';
-  con.connect(function(err){
-    if(err)throw err;
-    con.query(sql,[user],function(err,result,fields){
-      if(err) throw err;
-
-      console.log(result);
-    })
-  });
-}
 // insertNewUser('Russell', 'Nelson', 'prophet', '1stPresProphet');
-selectAllFromUsers();
+// selectAllFromUsers(function(result){
+//   Object.keys(result).forEach(function(key){
+//     var results = result[key];
+//     console.log(results.user_first_name, results.user_last_name);
+//   })
+// });
+
+// getOneUser(5,function(result){
+//   console.log(result[0].user_first_name+" "+result[0].user_last_name);
+// })
 //selectAllFromPosts();
 /*
 HelioHost 
