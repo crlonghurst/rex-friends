@@ -5,7 +5,6 @@ exports.selectAllFromUsers = (callBack) => {
         con.query("SELECT * FROM users;", function(err,result,fields){
           if (err) throw err;
           let rows = result;
-          con.end();
           return callBack(rows);
           
         })

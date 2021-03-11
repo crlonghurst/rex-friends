@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const query = require('./database/queries');
 
-const populate = require('./model/populate');
-
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
 
 const app = express();
