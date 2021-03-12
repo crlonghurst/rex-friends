@@ -18,13 +18,22 @@ exports.selectAllFromUsers = (callBack) => {
         return callBack(rows)
       })
   }
+
+  exports.selectAllFromGroups = (callBack) => {
+    con.query("SELECT * FROM Groups;", function(err, result, fields){
+      if(err)throw err;
+      console.log(result);
+      return callBack(result);
+    })
+  }
+
+  
   
   exports.getOneUser =(username, callBack) =>{
     let sql = 'SELECT * FROM users WHERE username = ?';
       con.query(sql,[username],function(err,result,fields){
         if(err)throw err;
         let row = result;
-        con.end();
         return callBack(row);
       })
     
@@ -39,4 +48,21 @@ exports.selectAllFromUsers = (callBack) => {
         console.log(result);
       })
   }
+
+
+  exports.insertNewPost = (post) =>{
+      const newPost = {
+        users_id = post.users_id,
+        post_title = post.post_title,
+        post_content = post.post_content,
+        posted_date = post.posted_date
+      }
+    let sql = 'INSERT INTO posts (users_id, post_title, post_content, posted_date) VALUES (?)';
+    con.query(sql,[newPost],function(err,result,fields){
+        if(err) throw err;
+
+        console.log(result);
+    })
+  }
+
 
