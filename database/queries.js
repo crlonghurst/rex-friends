@@ -31,12 +31,11 @@ exports.selectAllFromUsers = (callBack) => {
   
   exports.getOneUser =(username, callBack) =>{
     // This database
-    assert(username instanceof string)
+    assert(typeof(username) == typeof('string'))
     let sql = 'SELECT * FROM users WHERE username = ?';
       con.query(sql,[username],function(err,result,fields){
         if(err)throw err;
-        let row = result;
-        return callBack(result);
+        return callBack(result.length);
       })
     
   }
@@ -44,13 +43,19 @@ exports.selectAllFromUsers = (callBack) => {
   exports.insertNewUser = (user, callBack) =>{
     // These four asserts check the user that is passed to make sure all the fields are strings because that is what the database expects.
     // If these are not strings make sure they are since that is what the database expects.
-    assert(user.user_first_name instanceof string);
-    assert(user.user_last_name instanceof string);
-    assert(user.username instanceof string);
-    assert(user.password instanceof string);
-      console.log(user);
-    let sql = 'INSERT INTO users (user_first_name,   user_last_name,   username,   user_password) VALUES (?)';
-      con.query(sql,[user],function(err,result,fields){
+    assert(typeof(user.user_first_name) == typeof('str'));
+    assert(typeof(user.user_last_name) == typeof('str'));
+    assert(typeof(user.username) == typeof('str'));
+    assert(typeof(user.user_password) == typeof('string'));
+    let sql = 'INSERT INTO users (user_first_name,   user_last_name,   username,   user_password) VALUES (?,?,?,?)';
+      con.query(sql,
+        [
+          user.user_first_name, 
+          user.user_last_name, 
+          user.username, 
+          user.user_password
+        ],
+          function(err,result,fields){
         if(err) throw err;
         return callBack(result);
       })
@@ -58,7 +63,7 @@ exports.selectAllFromUsers = (callBack) => {
 
   exports.getGroupDataByID = (group_id, callBack) =>{
     // If this assert fires then we know that the group_id isn't being seen as an integer, but it needs to be for the database.
-    assert(group_id instanceof 1);
+    assert(typeof(group_id) == typeof(1));
       let sql = 'SELECT * FROM Groups WHERE group_id = ?';
       con.query(sql, [group_id], function (err, result, fields){
         if(err) throw err;
@@ -69,7 +74,7 @@ exports.selectAllFromUsers = (callBack) => {
 
   exports.getGroupId = (group_name, callBack)=>{
     // If this assert fires then the group_name is some sort of datatype other than string.
-    assert(group_name instanceof string);
+    assert(typeof(group_name) == typeof('string'));
     let sql = 'SELECT groups_id WHERE groups_name = ?;';
     con.query(sql, [group_name], function(err, result, fields){
       if(err) throw err;
@@ -81,7 +86,7 @@ exports.selectAllFromUsers = (callBack) => {
   exports.searchForGroup = (searchValue, callBack) =>{
     // If this assert fires go back to the route check if the searched value is being interpreted as a string.
     // If it is not change it so it is, that is the only way to search in the database.
-    assert(searchValue instanceof string);
+    assert(typeof(searchValue) == typeof('string'));
     let sql = 'SELECT * FROM Groups WHERE groups_name = ? OR groups_description IN (?)';
     con.query(sql, [searchValue], function (err, result, fields){
       if(err) throw err;
@@ -139,6 +144,17 @@ exports.selectAllFromUsers = (callBack) => {
       if (err) throw err;
 
       console.log(result);
+      return callBack(result);
+    })
+  }
+
+  exports.getFriends = (user_id, callBack) =>{
+    //If this assert fires then user_id is most likely a string that needs to be type casted.
+    assert(typeof(user_id) == typeof(1));
+    let sql = 'SELECT * FROM friends WHERE friend1_id = ? OR friend2_id = ?';
+    con.query(sql, [user_id], function(err, result, fields){
+      if(err) throw err;
+
       return callBack(result);
     })
   }
