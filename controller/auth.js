@@ -3,6 +3,7 @@ const User = require('../models/user');
 const nodemailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator');
+const query = require('../database/queries');
 
 const transporter = nodemailer.createTransport(sendGridTransport({
     auth: {
@@ -27,18 +28,12 @@ exports.getSignup = (req, res, next) => {
     } else {
         message = null;
     }
-    res.render('auth/signup', {
-        path: '/signup',
-        pageTitle: 'Signup',
-        errorMessage: message,
-        isAuthenticated: false
-    });
 };
 
 exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
-    User.findOne({ email: email })
+    query.getOneUser({ username: username })
         .then(user => {
             if (!user) {
                 return res.redirect('/login');
@@ -64,43 +59,31 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
 
         console.log(errors.array());
-        return res.status(422).render('auth/signup', {
-            path: '/signup',
-            pageTitle: 'Signup',
-            isAuthenticated: false,
-            errorMessage: errors.array()[0].msg
-        });
+        return res.status(422)
     }
 
-    User.findOne({ email: email }).then(userDoc => {
+    query.getOneUser({ username: username }).then(userDoc => {
         if (userDoc) {
             return res.redirect('/signup');
         }
         return bcrypt.hash(password, 12)
             .then(hashedPassword => {
                 const user = new User({
-                    email: email,
+                    username: username,
                     password: hashedPassword,
                     cart: { items: [] }
                 });
-                return user.save();;
+                return query.insertNewUser();
             })
             .then(result => {
-                res.redirect('/login');
-                return transporter.sendMail({
-                    to: email,
-                    from: 'rileyrusnelson@gmail.com',
-                    subject: 'Signup Succeeded!',
-                    html: '<h1> You signed up successfully! </h1>'
-                });
+
             });
     })
 
