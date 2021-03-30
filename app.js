@@ -4,6 +4,7 @@ const path = require('path');
 const query = require('./database/queries');
 const cors = require('cors');
 
+const auth = require('./controller/auth');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
 
 const app = express();
@@ -18,6 +19,11 @@ app.set('view engine', 'ejs')
   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
   next();
 })
+.post('/postSignup', auth.postSignup)
+.get('/getSignup', auth.getSignup)
+.post('/postLogin', auth.postLogin)
+.get('/postLogin', auth.getLogin)
+.post('/postLogout', auth.postLogout)
 // Route for the API that gives every user that is in the database in JSON format.
 .get('/getUsers', (req, res, next) => {
   query.selectAllFromUsers(function(result){
