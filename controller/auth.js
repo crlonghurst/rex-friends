@@ -1,15 +1,7 @@
-const bcrypt = require('bcryptjs');
 const User = require('../model/users');
-const nodemailer = require('nodemailer');
-const sendGridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator');
 const query = require('../database/queries');
 
-const transporter = nodemailer.createTransport(sendGridTransport({
-    auth: {
-        api_key: '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'
-    }
-}));
 
 
 exports.getLogin = (req, res, next) => {
@@ -33,29 +25,16 @@ exports.getSignup = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    query.getOneUser({ username: username })
-        .then(user => {
-            if (!user) {
-                return res.redirect('/login');
-            }
-            bcrypt.compare(password, user.password).then(result => {
-                if (result) {
-                    req.session.isLoggedIn = true;
-                    req.session.user = user;
-                    req.session.save(err => {
-                        console.log(err);
-                        res.redirect('/')
-                    });
-                } else {
-                    res.redirect('/login')
-                }
-            }).catch(err => {
-                console.log(err);
-                res.redirect('/login');
+    query.getOneUser(username, function(result) {
+        if (!result) {
+            console.error("That log in was not succesful!.");
+            return res.send("User not logged in!")
 
-            });
-        })
-        .catch(err => console.log(err));
+        } else {
+            console.log("The user was logged in")
+            return res.send(result)
+        }
+    })
 };
 
 exports.postSignup = (req, res, next) => {
@@ -69,28 +48,17 @@ exports.postSignup = (req, res, next) => {
         return res.status(422)
     }
 
-    query.getOneUser({ username: username }).then(userDoc => {
-        if (userDoc) {
-            return res.redirect('/signup');
-        }
-        return bcrypt.hash(password, 12)
-            .then(hashedPassword => {
-                const user = new User({
-                    user_first_name: req.body.user_first_name,
-                    user_last_name: req.body.user_last_name,
-                    username: username,
-                    password: hashedPassword
-                });
-                return query.insertNewUser(user);
-            })
-            .then(result => {
+    query.getOneUser(username, function(result) {
+        if (!result) {
+            console.error("That sign in was not succesful!.");
+            return res.send("User not signed in!")
 
-            });
+        } else {
+            console.log("The user was signed in")
+            return res.send(result)
+        }
     })
 
-    .catch(err => {
-        console.log(err);
-    });
 };
 
 exports.postLogout = (req, res, next) => {
