@@ -76,11 +76,12 @@ exports.postSignup = (req, res, next) => {
         return bcrypt.hash(password, 12)
             .then(hashedPassword => {
                 const user = new User({
+                    user_first_name: req.body.user_first_name,
+                    user_last_name: req.body.user_last_name,
                     username: username,
-                    password: hashedPassword,
-                    cart: { items: [] }
+                    password: hashedPassword
                 });
-                return query.insertNewUser();
+                return query.insertNewUser(user);
             })
             .then(result => {
 
