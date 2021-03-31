@@ -5,7 +5,9 @@ const userController = require('../controller/users');
 
 const router = express.Router();
 
-router.get('/getUsers', authController.getUsers);
+router.post('/deleteUserPost', userController.postDeleteUserPost);
+
+router.put('/updateUser', userController.updateUser);
 
 
 module.exports = router;
