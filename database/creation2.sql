@@ -17,6 +17,17 @@ CREATE TABLE user_group(
 ,   FOREIGN KEY (user_id) REFERENCES users(users_id)
 );
 
+
+CREATE TABLE comments (
+    comment_id INT NOT NULL AUTO_INCREMENT
+,   post_id INT NOT NULL
+,   users_id INT NOT NULL
+,   comment_content VARCHAR(150) NOT NULL
+,   comment_date VARCHAR(150) NOT NULL
+,   PRIMARY KEY (comment_ID)
+,   FOREIGN KEY (post_id) REFERENCES posts(post_id)
+,   FOREIGN KEY (users_id) REFERENCES users(users_id)
+);
 -- CREATE TABLE friends(
 --     friends_id INT NOT NULL AUTO_INCREMENT
 -- ,   friend1_id INT NOT NULL

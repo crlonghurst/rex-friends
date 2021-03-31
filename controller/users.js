@@ -1,10 +1,9 @@
 const query = require('../database/queries');
-const user = require('../model/users');
 
 
 exports.postDeleteUserPost = (req, res, next) => {
     const userId = req.body.users_id;
-    req.query.deleteUserPosts(userId)
+    query.deleteUserPosts(userId)
         .then(result => {
             const updatedPosts = this.user.items.filter(item => {
                 return item.userId.user.toString() !== userId.user.toString();
@@ -23,22 +22,10 @@ exports.updateUser = (req, res, next) => {
     const username = req.body.username;
     const user_password = req.body.user_password;
 
-    req.query.updateUser(users_id, user_first_name, user_last_name, username, user_password, )
+    query.updateUser(userId, user_first_name, user_last_name, username, user_password)
         .then(result => {
-            user.findById(userId)
-                .then(product => {
-                    user.userId = userId;
-                    user.user_first_name = user_first_name;
-                    user.user_last_name = user_last_name;
-                    user.username = username;
-                    user.user_password = user_password;
-                    return user.save();
-                })
-                .then(result => {
-                    console.log('UPDATED PRODUCT!');
-                    res.redirect('/getUser');
-                })
-                .catch(err => console.log(err));
+            console.log('UPDATED PRODUCT!');
+            res.redirect('/getUser');
         })
         .catch(err => console.log(err));
 };
