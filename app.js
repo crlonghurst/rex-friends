@@ -26,7 +26,7 @@ app.set('view engine', 'ejs')
     .get('/postLogin', auth.getLogin)
     .post('/postLogout', auth.postLogout)
     .post('/deleteUserPost', users.postDeleteUserPost)
-    .put('/updateUSer', users.updateUser)
+    .put('/updateUser', users.updateUser)
     // Route for the API that gives every user that is in the database in JSON format.
     .get('/getUsers', (req, res, next) => {
         query.selectAllFromUsers(function(result) {
