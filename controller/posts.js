@@ -6,4 +6,5 @@ exports.getPosts = (req, res, next) => {
         path: '/getPosts',
         pageTitle: 'News Feed',
     });
+
 };

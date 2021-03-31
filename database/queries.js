@@ -37,7 +37,6 @@ exports.selectAllFromUsers = (callBack) => {
         if(err)throw err;
         return callBack(result.length);
       })
-    
   }
   
   exports.insertNewUser = (user, callBack) =>{
@@ -146,8 +145,8 @@ exports.selectAllFromUsers = (callBack) => {
 
   exports.addFriend = (friend, callBack) =>{
     const newFriend = {
-      friend1id: friend.friends1_id,
-      friend2id: friend.friends2_id
+      friend1_id: friend.friends1_id,
+      friend2_id: friend.friends2_id
     }
     let sql = 'INSERT INTO friends (friend1_id, friend2_id) VALUE (?)';
     con.query(sql, [newFriend], function(err, result, fields){
