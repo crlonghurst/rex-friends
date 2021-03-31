@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const User = require('../model/users');
 const nodemailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator');
