@@ -47,13 +47,25 @@ app.set('view engine', 'ejs')
 .get('/getPosts', (req, res, next) => {
   query.selectAllFromPosts(function(result){
     // console.log(result);
-        const tempArr = [];
-        for (var i = 0; i < result.length; i++){
-            tempArr.push(result[i])
+        const posts = [
+          users_id,
+          group_id,
+          post_title,
+          post_content,
+          posted_date,
+          favorited,
+          comments = []
+        ];
+
+        for (var iPosts = 0; iPosts < result.length; iPosts++){
+          const comments = query.getCommentsByPost(iPosts);
+          for (var iComments; iComments < comments.length; iComments++){
+            posts[iPosts].comments.push(comments[iComments]);
+          }
+          posts.push(result[i])
         }
-        console.log(tempArr)
-      const arr = tempArr
-      res.send(arr)
+        console.log(posts)
+      res.send(posts)
     // res.render('./views/display',{
     //     pageTitle: 'Users',
     //     users: arr

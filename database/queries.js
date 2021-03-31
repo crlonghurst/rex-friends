@@ -61,6 +61,16 @@ exports.selectAllFromUsers = (callBack) => {
       })
   }
 
+  exports.getCommentsByPost = (post_id) =>{
+    assert(typeof(post_id) == typeof(1))
+    let sql = 'GET * FROM comments WHERE post_id = ?'
+    con.query(sql, [post_id], function(err, result, fields){
+      if(err) throw err;
+
+      return fields;
+    })
+  }
+
   exports.getGroupDataByID = (group_id, callBack) =>{
     // If this assert fires then we know that the group_id isn't being seen as an integer, but it needs to be for the database.
     assert(typeof(group_id) == typeof(1));
@@ -159,3 +169,35 @@ exports.selectAllFromUsers = (callBack) => {
     })
   }
 
+  exports.deleteUserPosts = (users_id, callBack)=>{
+
+    assert(typeof(users_id) == typeof(1));
+    let sql = 'DELETE FROM posts WHERE users_id = ?';
+    con.query(sql, [users_id], function(err, result, fields){
+      if(err) throw err;
+
+      return callBack(result);
+    })
+  }
+
+
+  exports.updateUser = (users_id, user_first_name, user_last_name, username, user_password, callBack)=>{
+    assert(typeof(users_id) == typeof(1))
+    assert(typeof(user_first_name) == typeof('str'))
+    assert(typeof(user_last_name) == typeof('str'))
+    assert(typeof(username) == typeof('str'))
+    assert(typeof(user_password) == typeof('str'))
+
+    let sql = 'UPDATE users SET user_first_name = ?, user_last_name = ?, username = ?, user_password = ? WHERE users_id = ?';
+    con.query(sql, 
+      [
+        user_first_name,
+        user_last_name,
+        username,
+        user_password,
+        users_id
+      ], function(err,result, fields){
+        if(err) throw err;
+        return callBack(result);
+      })
+  }
