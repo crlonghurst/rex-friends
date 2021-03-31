@@ -182,12 +182,14 @@ exports.selectAllFromUsers = (callBack) => {
 
 
   exports.updateUser = (users_id, user_first_name, user_last_name, username, user_password, callBack)=>{
-    assert(typeof(users_id) == typeof(1))
+    assert(typeof(users_id) != typeof(1))
     assert(typeof(user_first_name) == typeof('str'))
     assert(typeof(user_last_name) == typeof('str'))
     assert(typeof(username) == typeof('str'))
     assert(typeof(user_password) == typeof('str'))
 
+
+    console.log("update User");
     let sql = 'UPDATE users SET user_first_name = ?, user_last_name = ?, username = ?, user_password = ? WHERE users_id = ?';
     con.query(sql, 
       [
@@ -198,6 +200,7 @@ exports.selectAllFromUsers = (callBack) => {
         users_id
       ], function(err,result, fields){
         if(err) throw err;
+
         return callBack(result);
       })
   }
