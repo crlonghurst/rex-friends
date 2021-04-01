@@ -2,7 +2,7 @@ const query = require('../database/queries');
 
 
 exports.postDeleteUserPost = (req, res, next) => {
-    const userId = req.body.users_id;
+    const userId = req.headers.users_id;
     query.deleteUserPosts(userId, function(result) {
         console.log(result);
         if (!result) {
@@ -11,7 +11,7 @@ exports.postDeleteUserPost = (req, res, next) => {
 
         } else {
             console.log("The user was deleted")
-            return res.send(result)
+            return res.sendStatus(result)
         }
     })
 
@@ -35,7 +35,7 @@ exports.updateUser = (req, res, next) => {
 
         } else {
             console.log("The user was updated")
-            return res.send(result)
+            return res.sendStatus(result)
         }
     })
 

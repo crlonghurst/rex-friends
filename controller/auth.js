@@ -23,39 +23,39 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.headers.username;
+    const password = req.headers.password;
     query.getOneUser(username, function(result) {
         if (!result) {
             console.error("That log in was not succesful!.");
-            return res.send("User not logged in!")
+            return res.sendStatus("User not logged in!")
 
         } else {
             console.log("The user was logged in")
-            return res.send(result)
+            return res.sendStatus(result)
         }
     })
 };
 
 exports.postSignup = (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.headers.username;
+    const password = req.headers.password;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
 
         console.log(errors.array());
-        return res.status(422)
+        return res.sendStatus(422)
     }
 
     query.getOneUser(username, function(result) {
         if (!result) {
             console.error("That sign in was not succesful!.");
-            return res.send("User not signed in!")
+            return res.sendStatus("User not signed in!")
 
         } else {
             console.log("The user was signed in")
-            return res.send(result)
+            return res.sendStatus(result)
         }
     })
 
